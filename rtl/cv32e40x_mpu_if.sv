@@ -23,7 +23,7 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-module cv32e40x_mpu import cv32e40x_pkg::*;
+module cv32e40x_mpu_if import cv32e40x_pkg::*;
   #(  parameter bit          IF_STAGE                     = 1,
       parameter a_ext_e      A_EXT                        = A_NONE,
       parameter type         CORE_REQ_TYPE                = obi_inst_req_t,
@@ -209,11 +209,11 @@ module cv32e40x_mpu import cv32e40x_pkg::*;
 
   assign mpu_err = pma_err;
 
-  assign instr_fetch_access       = 1'b0;
-  assign load_access              = !core_trans_i.we;
-  assign core_trans_we            = core_trans_i.we;
-  assign core_resp_o.wpt_match    = '0; // Will be set by upstream wpt-module within load_store_unit
-  assign core_resp_o.align_status = bus_resp_i.align_status;
-  assign core_resp_o.bus_resp     = bus_resp_i.bus_resp;
+  // Writes are only supported on the data interface
+  // Tie to 1'b0 if this MPU is instantiatied in the IF stage
+  assign instr_fetch_access     = 1'b1;
+  assign load_access            = 1'b0;
+  assign core_trans_we          = 1'b0;
+  assign core_resp_o.bus_resp   = bus_resp_i;
 
 endmodule

@@ -239,7 +239,7 @@ module cv32e40x_if_stage import cv32e40x_pkg::*;
   assign core_trans.prot[2:1] = prefetch_priv_lvl;        // Machine mode
   assign core_trans.memtype   = 2'b00;                    // memtype is assigned in the MPU, tie off.
 
-  cv32e40x_mpu
+  cv32e40x_mpu_if
   #(
     .IF_STAGE             ( 1                           ),
     .A_EXT                ( A_EXT                       ),
